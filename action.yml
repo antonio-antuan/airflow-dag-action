@@ -45,7 +45,7 @@ inputs:
 outputs:
   validator-result:
     description: 'DAGs validator result'
-    value: ${{ steps.run }}
+    value: ${{ steps.run.outputs }}
 
 runs:
   using: 'composite'
@@ -62,5 +62,5 @@ runs:
           ${{ inputs.connFile }} \
           ${{ inputs.pluginPaths }} \
           ${{ inputs.loadExamples }} \
-          ${{ inputs.accessToken }}
+          ${{ inputs.accessToken }} >> $GITHUB_OUTPUT
       shell: bash
