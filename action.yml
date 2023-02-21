@@ -51,7 +51,7 @@ runs:
   using: 'composite'
   steps:
     - id: build
-      run: docker build -t airflow:latest -e PYTHON_VERSION=${{ inputs.pythonVersion }} -e AIRFLOW_VERSION=${{ inputs.airflowVersion }} .
+      run: docker build -t airflow:latest --build-arg PYTHON_VERSION=${{ inputs.pythonVersion }} --build-arg AIRFLOW_VERSION=${{ inputs.airflowVersion }} .
       shell: bash
     - id: run
       run: |
