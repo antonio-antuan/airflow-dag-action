@@ -1,0 +1,50 @@
+name: Main CI/CD Pipeline
+on:
+  workflow_call:
+     inputs:
+      requirementsFile:
+        description: 'Path to requirements.txt file'
+        required: true
+        type: string
+      dagPaths:
+        description: 'Paths to DAGs'
+        required: true
+        type: string
+      pluginPaths:
+        description: 'Paths to plugins'
+        required: true
+        type: string
+      loadExamples:
+        description: 'Load example DAGs'
+        required: true
+        type: boolean
+      varFile:
+        description: 'Path to vars.json file'
+        required: true
+        type: string
+      connFile:
+        description: 'Path to conns.json file'
+        required: true
+        type: string
+      accessToken:
+        description: 'GitHub access token'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: 'Validate DAGs'
+        uses: ./
+        with:
+          requirementsFile: ${{ inputs.requirementsFile }}
+          dagPaths: ${{ inputs.dagPaths }}
+          pluginPaths: ${{ inputs.pluginPaths }}
+          loadExamples: ${{ inputs.loadExamples }}
+          varFile: ${{ inputs.varFile }}
+          connFile: ${{ inputs.connFile }}
+          accessToken: ${{ inputs.accessToken }}
+
