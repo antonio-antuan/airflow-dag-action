@@ -14,6 +14,14 @@ inputs:
     description: 'Plugin dir to validate'
     required: false
     default: "plugins"
+  airflowVersion:
+    description: 'Airflow version to be tested'
+    required: false
+    default: "2.2.4"
+  pythonVersion:
+    description: 'Python version to be installed'
+    required: false
+    default: "3.7"
   requirementsFile:
     description: 'Path to requirements file that airflow use to run the DAG files.'
     required: false
@@ -40,13 +48,19 @@ outputs:
     value: ${{ steps.run }}
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.requirementsFile }}
-    - ${{ inputs.dagPaths }}
-    - ${{ inputs.varFile }}
-    - ${{ inputs.connFile }}
-    - ${{ inputs.pluginPaths }}
-    - ${{ inputs.loadExamples }}
-    - ${{ inputs.accessToken }}
+  using: 'composite'
+  steps:
+    - id: build
+      run: docker build -t airflow:latest -e PYTHON_VERSION=${{ inputs.pythonVersion }} -e AIRFLOW_VERSION=${{ inputs.airflowVersion }} .
+      shell: bash
+    - id: run
+      run: |
+        docker run --rm -v $(pwd):/github/workspace --workdir /github/workspace airflow:latest \
+          ${{ inputs.requirementsFile }} \
+          ${{ inputs.dagPaths }} \
+          ${{ inputs.varFile }} \
+          ${{ inputs.connFile }} \
+          ${{ inputs.pluginPaths }} \
+          ${{ inputs.loadExamples }} \
+          ${{ inputs.accessToken }}
+      shell: bash
