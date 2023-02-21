@@ -1,5 +1,50 @@
 name: Main CI/CD Pipeline
-on: [push, pull_request, workflow_dispatch]
+on: [push, pull_request, workflow_call]
+inputs:
+  dagPaths:
+    description: 'DAG dir to validate'
+    required: false
+    default: "dags"
+  pluginPaths:
+    description: 'Plugin dir to validate'
+    required: false
+    default: "plugins"
+  airflowVersion:
+    description: 'Airflow version to be tested'
+    required: false
+    default: "2.2.4"
+  airflowConstraintsVersion:
+    description: 'Airflow constraints version to be installed'
+    required: false
+    default: "2.2.4"
+  pythonVersion:
+    description: 'Python version to be installed'
+    required: false
+    default: "3.7"
+  pythonConstraintsVersion:
+    description: 'Python constraints version to be installed'
+    required: false
+    default: "3.7"
+  requirementsFile:
+    description: 'Path to requirements file that airflow use to run the DAG files.'
+    required: false
+    default: "requirements.txt"
+  varFile:
+    description: 'Path to var.json file that will be used to set Variable on airflow'
+    required: false
+    default: ""
+  connFile:
+    description: 'Path to conns.json file that will be used to set Connections on airflow'
+    required: false
+    default: ""
+  loadExamples:
+    description: 'Boolean flag for whether to load example dag or not'
+    required: false
+    default: "False"
+  accessToken:
+    description: 'Repo access token'
+    required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
