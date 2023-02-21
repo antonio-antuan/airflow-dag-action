@@ -18,8 +18,16 @@ inputs:
     description: 'Airflow version to be tested'
     required: false
     default: "2.2.4"
+  airflowConstraintsVersion:
+    description: 'Airflow constraints version to be installed'
+    required: false
+    default: "2.2.4"
   pythonVersion:
     description: 'Python version to be installed'
+    required: false
+    default: "3.7"
+  pythonConstraintsVersion:
+    description: 'Python constraints version to be installed'
     required: false
     default: "3.7"
   requirementsFile:
@@ -51,7 +59,13 @@ runs:
   using: 'composite'
   steps:
     - id: build
-      run: docker build -t airflow:latest --build-arg PYTHON_VERSION=${{ inputs.pythonVersion }} --build-arg AIRFLOW_VERSION=${{ inputs.airflowVersion }} .
+      run: |
+        docker build -t airflow:latest \
+          --build-arg PYTHON_VERSION=${{ inputs.pythonVersion }} \
+          --build-arg AIRFLOW_VERSION=${{ inputs.airflowVersion }} \
+          --build-arg AIRFLOW_CONSTRAINTS_VERSION=${{ inputs.airflowConstraintsVersion }} \
+          --build-arg AIRFLOW_CONSTRAINTS_VERSION=${{ inputs.airflowConstraintsVersion }} \
+        .
       shell: bash
     - id: run
       run: |
