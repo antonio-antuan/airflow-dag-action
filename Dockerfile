@@ -1,6 +1,9 @@
 ARG PYTHON_VERSION
 ARG AIRFLOW_VERSION
-ENV _PYTHON_VERSION ${PYTHON_VERSION}  # PYTHON_VERSION is overriden by the python image with 3.7.16 (in case of 3.7 arg value)
+
+# PYTHON_VERSION is overriden by the python image with 3.7.16 (in case of 3.7 arg value)
+ENV _PYTHON_VERSION ${PYTHON_VERSION}
+
 FROM python:${PYTHON_VERSION}
 
 RUN python -m venv /opt/venv
