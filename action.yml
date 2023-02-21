@@ -63,7 +63,7 @@ runs:
         docker build -t airflow:latest \
           --build-arg PYTHON_VERSION=${{ inputs.pythonVersion }} \
           --build-arg AIRFLOW_VERSION=${{ inputs.airflowVersion }} \
-          --build-arg AIRFLOW_CONSTRAINTS_VERSION=${{ inputs.airflowConstraintsVersion }} \
+          --build-arg PYTHON_CONSTRAINTS_VERSION=${{ inputs.pythonConstraintsVersion }} \
           --build-arg AIRFLOW_CONSTRAINTS_VERSION=${{ inputs.airflowConstraintsVersion }} \
         .
       shell: bash
